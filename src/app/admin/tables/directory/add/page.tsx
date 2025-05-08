@@ -26,12 +26,18 @@ import { useRouter } from "next/navigation";
 import { ProgramsComboBox } from "@/components/educational-program-combo-box";
 import { cn } from "@/lib/utils";
 
+const gridMap = [
+    "grid-cols-1",
+    "grid-cols-2",
+    "grid-cols-3",
+    "grid-cols-4",
+]
 const AddDirectory = () => {
     const [value, setValue] = React.useState<Partial<Directory>>({});
     const router = useRouter();
     const handleCreate = () => {
         //check if all fields are filled
-        if (!value.subdivision_id || !value.degree_id || !value.educationForm || !value.educationalProgramID || value.accreditation === undefined || !value.educationScope || !value.studyPeriod || !value.paidCostEntireCourse || !value.paidCostEntireCourseWritten || !value.firstYearPeriod || !value.firstYearCost || !value.firstYearCostWritten || !value.secondYearPeriod || !value.secondYearCost || !value.secondYearCostWritten || !value.thirdYearPeriod || !value.thirdYearCost || !value.thirdYearCostWritten || !value.fourthYearPeriod || !value.fourthYearCost || !value.fourthYearCostWritten || !value.firstYearPayDue || !value.anualPayDue || !value.semesterPayDue) {
+        if (!value.subdivision_id || !value.degree_id || !value.educationForm || !value.educationalProgramID || value.accreditation === undefined || !value.educationScope || !value.studyPeriod || !value.paidCostEntireCourse || !value.paidCostEntireCourseWritten || !value.firstYearPeriod || !value.firstYearCost || !value.firstYearCostWritten || !value.secondYearPeriod || !value.secondYearCost || !value.secondYearCostWritten  || !value.firstYearPayDue || !value.anualPayDue || !value.semesterPayDue) {
             toast.error('Заповніть усі поля');
             return;
         }
@@ -90,7 +96,7 @@ const AddDirectory = () => {
                 </div>
             </CardHeader>
             <CardContent>
-                <div className={cn("gap-4 grid grid-cols-2",`grid-cols-${columns}`)}>
+                <div className={cn("gap-4 grid grid-cols-2",`${gridMap[columns-1]}`)}>
                     <Label className="space-y-2">
                         <span>Підрозділ</span>
                         <SubdivisionComboBox

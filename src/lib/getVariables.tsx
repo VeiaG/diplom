@@ -122,11 +122,11 @@ export const getVariables =async (initialData:{
         ipn_vstup: initialData?.ipn_vstup || '[ІПН ВСТУПНИКА НЕ ЗНАЙДЕНО]',
         phone_vstup: initialData?.phone_vstup || '[ТЕЛЕФОН ВСТУПНИКА НЕ ЗНАЙДЕНО]',
 
-        pib_legal: initialData?.pib_legal || '[ПІБ ПРЕДСТАВНИКА НЕ ЗНАЙДЕНО]',
-        passport_legal: initialData?.passport_legal || '[ПАСПОРТ ПРЕДСТАВНИКА НЕ ЗНАЙДЕНО]',
-        address_legal: initialData?.address_legal || '[АДРЕСА ПРЕДСТАВНИКА НЕ ЗНАЙДЕНО]',
-        ipn_legal: initialData?.ipn_legal || '[ІПН ПРЕДСТАВНИКА НЕ ЗНАЙДЕНО]',
-        phone_legal: initialData?.phone_legal || '[ТЕЛЕФОН ПРЕДСТАВНИКА НЕ ЗНАЙДЕНО]',
+        pib_legal: initialData?.pib_legal || '',
+        passport_legal: initialData?.passport_legal || '',
+        address_legal: initialData?.address_legal || '',
+        ipn_legal: initialData?.ipn_legal || '',
+        phone_legal: initialData?.phone_legal || '',
         education_form: (initialData?.education_form === 'денна') ? 'денною' :
                         (initialData?.education_form === 'заочна') ? 'заочною' : '[ФОРМА НАВЧАННЯ НЕ ВКАЗАНА]',
 
@@ -156,13 +156,13 @@ export const getVariables =async (initialData:{
         y2PaidW: curDirectory.secondYearCostWritten || '[СУМА ЗА ДРУГИЙ РІК НЕ ВКАЗАНА]',
         yy2: curDirectory.secondYearPeriod || '[ДРУГИЙ РІК НЕ ВКАЗАНО]',
 
-        y3Paid: curDirectory.thirdYearCost.toLocaleString('uk-UA') || '[СУМА ЗА ТРЕТІЙ РІК НЕ ВКАЗАНА]',
-        y3PaidW: curDirectory.thirdYearCostWritten || '[СУМА ЗА ТРЕТІЙ РІК НЕ ВКАЗАНА]',
-        yy3: curDirectory.thirdYearPeriod || '[ТРЕТІЙ РІК НЕ ВКАЗАНО]',
+        y3Paid: curDirectory.thirdYearCost.toLocaleString('uk-UA') || '',
+        y3PaidW: curDirectory.thirdYearCostWritten || '',
+        yy3: curDirectory.thirdYearPeriod || '',
 
-        y4Paid: curDirectory.fourthYearCost.toLocaleString('uk-UA') || '[СУМА ЗА ЧЕТВЕРТИЙ РІК НЕ ВКАЗАНА]',
-        y4PaidW: curDirectory.fourthYearCostWritten || '[СУМА ЗА ЧЕТВЕРТИЙ РІК НЕ ВКАЗАНА]',
-        yy4: curDirectory.fourthYearPeriod || '[ЧЕТВЕРТИЙ РІК НЕ ВКАЗАНО]',
+        y4Paid: curDirectory.fourthYearCost.toLocaleString('uk-UA') || '',
+        y4PaidW: curDirectory.fourthYearCostWritten || '',
+        yy4: curDirectory.fourthYearPeriod || '',
 
         //y1Due Pay - дата в такому форматі : 1 вересня 2024 р.
         y1DuePay: formatDate(curDirectory.firstYearPayDue) || '[ТЕРМІН ОПЛАТИ ЗА ПЕРШИЙ РІК НЕ ВКАЗАНО]',
@@ -202,5 +202,16 @@ export const generateFile = async (variables: AdmissionData , fileName:string) =
 
     const buffer = doc.getZip().generate({ type: 'nodebuffer' });
 
+    return buffer;
+}
+
+
+export const getOriginalFile = async (fileName:string) => {
+    const filePath = path.join(process.cwd(), "/src/files", fileName);
+
+
+    const content = await fs.readFile(filePath, 'binary');
+
+    const buffer = Buffer.from(content, 'binary');
     return buffer;
 }

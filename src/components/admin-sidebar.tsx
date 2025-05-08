@@ -57,7 +57,7 @@ import Link from "next/link"
                     </SidebarMenuItem>
                     <SidebarMenuItem>
                         <SidebarMenuButton asChild tooltip="Звіти">
-                            <Link href="/admin" >
+                            <Link href="/admin/report" >
                                 <Download/>
                                 <span>
                                     Звіти
@@ -84,7 +84,7 @@ import Link from "next/link"
                     </SidebarMenuItem>
                     <SidebarMenuItem>
                         <SidebarMenuButton asChild tooltip="Контракти">
-                            <Link href="/admin/users">
+                            <Link href="/admin/templates">
                                 <FileText/>
                                 <span>
                                     Контракти

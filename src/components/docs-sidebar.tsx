@@ -1,7 +1,7 @@
 "use client"
 
 import { usePathname } from "next/navigation"
-import { Book, FileText, Home } from "lucide-react"
+import { Book, ChevronLeft, Home } from "lucide-react"
 
 import {
   Sidebar,
@@ -23,29 +23,19 @@ const docsNavigation = [
     title: "Початок",
     icon: Home,
     items: [
-      { title: "Огляд інтерфейсу", href: "/docs/introduction" },
-      { title: "Створення контрактів", href: "/docs/installation" },
-      { title: "Завантаження контрактів", href: "/docs/project-structure" },
+      { title: "Огляд інтерфейсу", href: "/docs/interface" },
+      { title: "Створення контрактів", href: "/docs/contract-form" },
     ],
   },
   {
     title: "Адміністрування",
     icon: Book,
     items: [
-      { title: "Огляд інтерфейсу", href: "/docs/routing" },
-      { title: "Реєстрація користувачів", href: "/docs/data-fetching" },
-      { title: "Редагування таблиць", href: "/docs/rendering" },
-      { title: "Імпорт та Експорт", href: "/docs/caching" },
-    ],
-  },
-  {
-    title: "Components",
-    icon: FileText,
-    items: [
-      { title: "Button", href: "/docs/components/button" },
-      { title: "Card", href: "/docs/components/card" },
-      { title: "Dialog", href: "/docs/components/dialog" },
-      { title: "Form", href: "/docs/components/form" },
+      { title: "Огляд інтерфейсу", href: "/docs/admin-interface " },
+      { title: "Реєстрація користувачів", href: "/docs/user-managment" },
+      { title: "Редагування таблиць", href: "/docs/database" },
+      { title: "Імпорт та Експорт", href: "/docs/import" },
+      { title: "Редагування шаблонів", href: "/docs/templates" },
     ],
   },
 ]
@@ -58,15 +48,10 @@ export function DocsSidebar() {
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton size="lg" asChild>
-              <Link href="/docs">
-                <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-                  <Book className="size-4" />
-                </div>
-                <div className="flex flex-col gap-0.5 leading-none">
-                  <span className="font-semibold">Документація</span>
-                  <span className="text-xs text-muted-foreground">v1.0.0</span>
-                </div>
+            <SidebarMenuButton  asChild>
+              <Link href="/">
+                <ChevronLeft/>
+                <span className="ml-2">На головну</span>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>

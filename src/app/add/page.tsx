@@ -471,7 +471,7 @@ const ThirdStep = ({
     const {
         data,
         setKey,
-        isNull
+        // isNull
     } = useAddPage();
     const [errors, setErrors] = useState<{
         [key: string]: string;
@@ -479,14 +479,14 @@ const ThirdStep = ({
   
     const handleNextPage = ()=>{
         const currentErrors = {...errors};
-        const keys = ['pib_legal','passport_legal','address_legal','ipn_legal','phone_legal'];
-        keys.forEach((key)=>{
-            if(isNull(key)){
-                currentErrors[key] = 'Це поле не може бути пустим';
-            }else{
-                delete currentErrors[key];
-            }
-        });
+        // const keys = ['pib_legal','passport_legal','address_legal','ipn_legal','phone_legal'];
+        // keys.forEach((key)=>{
+        //     if(isNull(key)){
+        //         currentErrors[key] = 'Це поле не може бути пустим';
+        //     }else{
+        //         delete currentErrors[key];
+        //     }
+        // });
         setErrors(currentErrors);
         if(Object.keys(currentErrors).length > 0){
             return;

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { generateFile, getVariables } from '@/lib/getVariables';
 import archiver from 'archiver';
 import { auth } from "@/auth";
+import { EDU_FILE_NAME, JUR_FILE_NAME, PHYS_FILE_NAME } from "@/globals";
 
 export const POST = auth( async (req) => {
     try{
@@ -19,17 +20,17 @@ export const POST = auth( async (req) => {
         const data = await getVariables(initialData);
 
         // Список файлів для генерації
-        const fileNames = ['TempContractEdu2024.docx'];
+        const fileNames = [EDU_FILE_NAME];
         const endFileNames = [`_Договір_навчання_${new Date().getFullYear()}.docx`];
         const endPrefix = initialData?.pib_vstup.replace(' ', '_');
         
 
         if(initialData?.financing === 'phys'){
-            fileNames.push('TempContractPhysical2024.docx');
+            fileNames.push(PHYS_FILE_NAME);
             endFileNames.push(`_Договір_фіз_особа_${new Date().getFullYear()}.docx`);
         }
         if(initialData?.financing === 'jur'){
-            fileNames.push('TempContractOf2024.docx');
+            fileNames.push(JUR_FILE_NAME);
             endFileNames.push(`_Договір_юр_особа_${new Date().getFullYear()}.docx`);
 
         }

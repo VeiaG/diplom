@@ -24,6 +24,8 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       <Image
         sizes="100vw"
         style={{ width: "100%", height: "auto" }}
+        width={0}
+        height={0}
         className="rounded-lg my-6"
         alt={props.alt || ""}
         {...props}

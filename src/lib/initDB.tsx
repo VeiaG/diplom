@@ -868,14 +868,3 @@ export const initDB = async () => {
         return false;
     }
 };
-export const isInitialized = async () => {
-    //if table initialized exists, then the database is initialized
-    // throw new Error("Не працює , потім чекнути заново , завжди false");
-    try {
-        const [rows] = await pool.query('SHOW TABLES LIKE "initialized"');
-        return (rows as User[]).length > 0;
-    } catch (e) {
-        console.error(e);
-        return false;
-    }
-};

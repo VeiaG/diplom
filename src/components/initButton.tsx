@@ -1,9 +1,11 @@
 'use client';
 import React, { useState } from 'react'
 import { Button } from './ui/button';
+import { useRouter } from 'next/navigation';
 
 const InitButton = () => {
     const [isLoading, setIsLoading] = useState(false);
+    const router = useRouter();
 
     const handleClick = async ()=>{
         setIsLoading(true)
@@ -15,7 +17,9 @@ const InitButton = () => {
         }
 
         setIsLoading(false)
-        window.location.reload();
+        //go to / 
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        router.push('/')
     }
   return (
     <Button

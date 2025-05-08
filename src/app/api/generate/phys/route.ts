@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { generateFile, getVariables } from '@/lib/getVariables';
 import { auth } from "@/auth";
+import { PHYS_FILE_NAME } from "@/globals";
 
 export const POST = auth( async (req) => {
     try{
@@ -17,7 +18,7 @@ export const POST = auth( async (req) => {
         const data = await getVariables(initialData);
 
         // Файл для генерації
-        const fileName = 'TempContractPhysical2024.docx';
+        const fileName = PHYS_FILE_NAME;
 
         // Отримуємо буфер файлу
         const buffer = await generateFile(data, fileName);

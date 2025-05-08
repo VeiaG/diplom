@@ -5,8 +5,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <SidebarProvider>
       <AdminSidebar />
-      <div className='container mx-auto'>
-
+      <div className='container mx-auto '>
         {children}
       </div>
         

@@ -12,7 +12,7 @@ export default function DocsLayout({
             <SidebarProvider>
                 <DocsSidebar />
                 <SidebarInset>
-                    <div className="container max-w-4xl py-8 md:py-10 mx-auto">
+                    <div className="container py-8 md:py-10 mx-auto px-2">
                         <div className="prose max-w-none dark:prose-invert">
                             {children}
                         </div>
