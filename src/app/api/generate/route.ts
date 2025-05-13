@@ -7,24 +7,15 @@ import { EDU_FILE_NAME, JUR_FILE_NAME, PHYS_FILE_NAME } from "@/globals";
 export const POST = auth( async (req) => {
     try{
         if(!req.auth) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-        
         const initialData = await req.json();
-
-        // Перевірка на обов'язкові поля
-        const requiredFields = ['directory_id', 'subdivision', 'directory_id'];
+        const requiredFields = ['directory_id', 'subdivision', 'directory_id']; // Перевірка на обов'язкові поля
         if (!requiredFields.every(field => field in initialData && initialData[field] !== '')) {
-            return NextResponse.json({ error: 'Required fields are missing' }, { status: 400 });
+            return NextResponse.json({ error: "Обов'язкові поля відсутні" }, { status: 400 });
         }
-
-        // Мапинг змінних у файлах в об'єкт
-        const data = await getVariables(initialData);
-
-        // Список файлів для генерації
-        const fileNames = [EDU_FILE_NAME];
+        const data = await getVariables(initialData); // Мапинг змінних у файлах в об'єкт
+        const fileNames = [EDU_FILE_NAME]; // Список файлів для генерації
         const endFileNames = [`_Договір_навчання_${new Date().getFullYear()}.docx`];
         const endPrefix = initialData?.pib_vstup.replace(' ', '_');
-        
-
         if(initialData?.financing === 'phys'){
             fileNames.push(PHYS_FILE_NAME);
             endFileNames.push(`_Договір_фіз_особа_${new Date().getFullYear()}.docx`);
@@ -32,32 +23,23 @@ export const POST = auth( async (req) => {
         if(initialData?.financing === 'jur'){
             fileNames.push(JUR_FILE_NAME);
             endFileNames.push(`_Договір_юр_особа_${new Date().getFullYear()}.docx`);
-
         }
-
-
-        // Використовуємо ReadableStream для потокової передачі архіву
-        const stream = new ReadableStream({
+        const stream = new ReadableStream({ // Використовуємо ReadableStream для потокової передачі архіву
             async start(controller) {
                 const archive = archiver('zip', { zlib: { level: 9 } });
-
                 archive.on('data', (chunk) => controller.enqueue(chunk));
                 archive.on('end', () => controller.close());
                 archive.on('error', (err) => controller.error(err));
-
                 // Додаємо файли до архіву
                 for (const fileName of fileNames) {
                     const buffer = await generateFile(data, fileName);
-                    
                     archive.append(buffer, { name: endPrefix + 
                         endFileNames[fileNames.indexOf(fileName)] 
                      });
                 }
-
                 archive.finalize();
             }
         });
-
         return new NextResponse(stream, {
             status: 200,
             headers: {

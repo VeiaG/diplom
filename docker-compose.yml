@@ -1,40 +1,45 @@
 version: '3.8'
-
 services:
-  diplom:
-    image: veiag/diplom:latest
-    container_name: diplom
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: app
     environment:
-      - MYSQL_HOST=mysql # MySQL host (use 172.17.0.1 if using local mysql instance)
-      - MYSQL_PORT=3306 # Port of mysql container
-      - MYSQL_DATABASE=db # Database name
-      - MYSQL_USER=admin # MySQL user
-      - MYSQL_PASSWORD=admin # MySQL password
-      - AUTH_SECRET=OqW/n3/i/e65kOxpc6juz73UsqidP0hh5qOeV/kQptQ # Secret key for JWT authentication
-
+      - MYSQL_HOST=mysql # Хост MySQL (потрібно використовувати 172.17.0.1, 
+                         # якщо використовується локальний mySQL)
+      - MYSQL_PORT=3306 # Порт MySQL
+      - MYSQL_DATABASE=db # Назва бази даних
+      - MYSQL_USER=admin # Користувач MySQL
+      - MYSQL_PASSWORD=admin # Пароль MySQL
+      - AUTH_SECRET=OqW/n3/i/e65kOxpc6juz73UsqidP0hh5qOeV/kQptQ # Секрет для JWT
+    volumes:
+      - templates_data:/app/src/files # Зберігання шаблонів на локальному диску, 
+                                      # щоб не втратити їх при перезапуску контейнера
   mysql:
     image: mysql:latest
     container_name: mysql
     environment:
-      MYSQL_ROOT_PASSWORD: admin
-      MYSQL_DATABASE: db
-      MYSQL_USER: admin
-      MYSQL_PASSWORD: admin
+      MYSQL_ROOT_PASSWORD: admin # Пароль root
+      MYSQL_DATABASE: db # Назва бази даних
+      MYSQL_USER: admin # Користувач MySQL
+      MYSQL_PASSWORD: admin # Пароль MySQL
     volumes:
-      - mysql_data:/var/lib/mysql
+      - mysql_data:/var/lib/mysql # Зберігання даних MySQL на локальному диску
     ports:
       - "3306:3306"
   phpMyAdmin:
     image: phpmyadmin/phpmyadmin
     container_name: phpmyadmin
     environment:
-      PMA_HOST: mysql
-      PMA_PORT: 3306
+      PMA_HOST: mysql # Хост MySQL
+      PMA_PORT: 3306 # Порт MySQL
     ports:
       - "8080:80"
     depends_on:
       - mysql
-
 volumes:
   mysql_data:
+    driver: local
+  templates_data:
     driver: local
