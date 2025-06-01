@@ -11,7 +11,7 @@ const Navigation = () => {
         required: true
     });
   return (
-    <div className='w-full sticky top-0 bg-background py-4 border-b '>
+    <div className='w-full sticky top-0 bg-background py-4 border-b z-50'>
         <div className="container mx-auto flex gap-2 items-center justify-between">
             <div>
                 Привіт, <b>{session?.user?.username}</b>
