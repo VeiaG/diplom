@@ -471,6 +471,7 @@ const ThirdStep = ({
     const {
         data,
         setKey,
+        setAll
         // isNull
     } = useAddPage();
     const [errors, setErrors] = useState<{
@@ -492,6 +493,18 @@ const ThirdStep = ({
             return;
         }
         setStep(4);
+    }
+
+    const handleCopyFromApplicant = () => {
+        setAll({
+            ...data,
+            pib_legal: data.pib_vstup || '',
+            passport_legal: data.passport_vstup || '',
+            address_legal: data.address_vstup || '',
+            ipn_legal: data.ipn_vstup || '',
+            phone_legal: data.phone_vstup || ''
+        });
+        toast.success("Дані законного представника скопійовані з вступника");
     }
     return (
         <Card>
@@ -579,8 +592,11 @@ const ThirdStep = ({
                 </div>
             </CardContent>
             <CardFooter>
-                <div className="flex items-center gap-2 ml-auto">
+                <div className="flex items-center gap-2 w-full">
                     <Button variant={"outline"} 
+                        onClick={handleCopyFromApplicant}
+                    >Скопіювати дані вступника</Button>
+                    <Button variant={"outline"} className="ml-auto"
                         onClick={() => setStep(2)}
                     >Назад</Button>
                     <Button variant={"default"}
@@ -1012,7 +1028,6 @@ const PageContent = ()=>{
             router.push('/');
         })
     },[searchParams,setAll,router]);
-
     if(isLoading){
         return (
             <div className="text-center text-muted-foreground">
@@ -1064,9 +1079,6 @@ const PageContent = ()=>{
                     setStep={setStep}
                 />
             }
-             {/* <pre className="text-xs">
-                Data: {JSON.stringify(data,null,2)}
-            </pre> */}
         </div>
     );
 }

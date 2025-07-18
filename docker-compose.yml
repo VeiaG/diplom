@@ -1,17 +1,23 @@
 version: '3.8'
 services:
-  app:
-    image: veiag/nuft_pk:latest
-    container_name: app
-    environment:
-      - MYSQL_HOST=mysql
-      - MYSQL_PORT=3306
-      - MYSQL_DATABASE=db
-      - MYSQL_USER=admin
-      - MYSQL_PASSWORD=admin
-      - AUTH_SECRET=OqW/n3/i/e65kOxpc6juz73UsqidP0hh5qOeV/kQptQ
-    volumes:
-      - templates_data:/app/src/files
+  # app:
+    # image: veiag/nuft_pk:latest
+    # container_name: app
+    
+    #Building the image from the Dockerfile
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile
+    # container_name: app
+    # environment:
+    #   - MYSQL_HOST=mysql
+    #   - MYSQL_PORT=3306
+    #   - MYSQL_DATABASE=db
+    #   - MYSQL_USER=admin
+    #   - MYSQL_PASSWORD=admin
+    #   - AUTH_SECRET=OqW/n3/i/e65kOxpc6juz73UsqidP0hh5qOeV/kQptQ
+    # volumes:
+    #   - templates_data:/app/src/files
 
   mysql:
     image: mysql:latest
@@ -37,17 +43,17 @@ services:
     depends_on:
       - mysql
 
-  watchtower:
-    image: containrrr/watchtower
-    container_name: watchtower
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    environment:
-      - WATCHTOWER_CLEANUP=true
-      - WATCHTOWER_POLL_INTERVAL=120 # перевірка кожні 2 хвилини
+  # watchtower:
+  #   image: containrrr/watchtower
+  #   container_name: watchtower
+  #   volumes:
+  #     - /var/run/docker.sock:/var/run/docker.sock
+  #   environment:
+  #     - WATCHTOWER_CLEANUP=true
+  #     - WATCHTOWER_POLL_INTERVAL=120 # перевірка кожні 2 хвилини
 
 volumes:
   mysql_data:
     driver: local
-  templates_data:
-    driver: local
+  # templates_data:
+  #   driver: local
