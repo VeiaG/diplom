@@ -76,7 +76,7 @@ export const ProgramsComboBox = ({
                     {value
                         ? programs?.find(
                               (item) => (item.id || '').toString() === value
-                          )?.specialtyName
+                          )?.[titleKey]?.toString()
                         : "Оберіть спеціальність..."}
                     <ChevronsUpDown className="opacity-50" />
                 </Button>
