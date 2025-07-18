@@ -182,6 +182,7 @@ export const columns: ColumnDef<Directory>[] = [
         }}
         filterBySubdivision={row.original.subdivision_id}
         disabled={row.original.subdivision_id === undefined}
+        titleKey="educationalProgram"
       />
     }
   },
