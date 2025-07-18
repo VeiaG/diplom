@@ -2,6 +2,7 @@
 import { auth } from "@/auth";
 import { pool } from "@/lib/db";
 import { User } from "@/types/db";
+import { hash } from "bcryptjs";
 import { FieldPacket, ResultSetHeader } from "mysql2";
 import { NextResponse } from "next/server";
 type UserWithoutPassword = Omit<User, 'password'>;
@@ -36,8 +37,8 @@ export const POST = auth( async (req) => {
         if(role !== 'admin' && role !== 'user'){
             return NextResponse.json({ error: "Invalid input" }, { status: 400 });
         }
-
-        const [result] = await pool.query<ResultSetHeader>('INSERT INTO users (username, email, password, role, subdivision_id) VALUES (?, ?, ?, ?, ?)', [username, email, password, role, subdivision_id]);
+        const hashedPassword = await hash(password, 10);
+        const [result] = await pool.query<ResultSetHeader>('INSERT INTO users (username, email, password, role, subdivision_id) VALUES (?, ?, ?, ?, ?)', [username, email, hashedPassword, role, subdivision_id]);
         if (!result.insertId) throw new Error("Failed to insert subdivision");
         const [user] = await pool.query('SELECT id, username, email, password, role, subdivision_id FROM users WHERE id = ?', [result.insertId]);
         if (!Array.isArray(user) || user.length === 0) throw new Error("User not found");

@@ -1,43 +1,51 @@
 version: '3.8'
 services:
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: veiag/nuft_pk:latest
     container_name: app
     environment:
-      - MYSQL_HOST=mysql # Хост MySQL (потрібно використовувати 172.17.0.1, 
-                         # якщо використовується локальний mySQL)
-      - MYSQL_PORT=3306 # Порт MySQL
-      - MYSQL_DATABASE=db # Назва бази даних
-      - MYSQL_USER=admin # Користувач MySQL
-      - MYSQL_PASSWORD=admin # Пароль MySQL
-      - AUTH_SECRET=OqW/n3/i/e65kOxpc6juz73UsqidP0hh5qOeV/kQptQ # Секрет для JWT
+      - MYSQL_HOST=mysql
+      - MYSQL_PORT=3306
+      - MYSQL_DATABASE=db
+      - MYSQL_USER=admin
+      - MYSQL_PASSWORD=admin
+      - AUTH_SECRET=OqW/n3/i/e65kOxpc6juz73UsqidP0hh5qOeV/kQptQ
     volumes:
-      - templates_data:/app/src/files # Зберігання шаблонів на локальному диску, 
-                                      # щоб не втратити їх при перезапуску контейнера
+      - templates_data:/app/src/files
+
   mysql:
     image: mysql:latest
     container_name: mysql
     environment:
-      MYSQL_ROOT_PASSWORD: admin # Пароль root
-      MYSQL_DATABASE: db # Назва бази даних
-      MYSQL_USER: admin # Користувач MySQL
-      MYSQL_PASSWORD: admin # Пароль MySQL
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_DATABASE: db
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
     volumes:
-      - mysql_data:/var/lib/mysql # Зберігання даних MySQL на локальному диску
+      - mysql_data:/var/lib/mysql
     ports:
       - "3306:3306"
+
   phpMyAdmin:
     image: phpmyadmin/phpmyadmin
     container_name: phpmyadmin
     environment:
-      PMA_HOST: mysql # Хост MySQL
-      PMA_PORT: 3306 # Порт MySQL
+      PMA_HOST: mysql
+      PMA_PORT: 3306
     ports:
       - "8080:80"
     depends_on:
       - mysql
+
+  watchtower:
+    image: containrrr/watchtower
+    container_name: watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - WATCHTOWER_CLEANUP=true
+      - WATCHTOWER_POLL_INTERVAL=120 # перевірка кожні 2 хвилини
+
 volumes:
   mysql_data:
     driver: local
