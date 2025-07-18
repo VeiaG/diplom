@@ -143,7 +143,7 @@ export const getVariables =async (initialData:{
                     : '[ФІНАНСУВАННЯ НЕ ВКАЗАНО]',
 
         pib_vstup_short: getShortName(initialData?.pib_vstup || '[ПІБ ВСТУПНИКА НЕ ЗНАЙДЕНО]'),
-        pib_legal_short: getShortName(initialData?.pib_legal || '[ПІБ ПРЕДСТАВНИКА НЕ ЗНАЙДЕНО]'),
+        pib_legal_short: getShortName(initialData?.pib_legal || ''),
 
         paidEntire: curDirectory.paidCostEntireCourse.toLocaleString('uk-UA') || '[СУМА ЗА ВСІ КУРСИ НЕ ВКАЗАНА]',
         paidEntireW: curDirectory.paidCostEntireCourseWritten || '[СУМА ЗА ВСІ КУРСИ НЕ ВКАЗАНА]',

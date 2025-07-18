@@ -301,6 +301,9 @@ const FirstStep = ({
                     <SelectContent>
                         <SelectItem value="щороку">щороку</SelectItem>
                         <SelectItem value="кожного семестру">кожного семестру</SelectItem>
+                         <SelectItem value="одноразово">одноразово</SelectItem>
+                        <SelectItem value="щомісяця">щомісяця</SelectItem>
+                        <SelectItem value="за кредити ЄКТС">за кредити ЄКТС</SelectItem>
                         
                     </SelectContent>
                     </Select>
@@ -623,6 +626,8 @@ const FourthStep = ({
         [key: string]: string;
     }>({});
 
+    const [selectedTerm, setSelectedTerm] = useState<string>('');
+
     const {
         directory,
         isLoading,
@@ -635,7 +640,31 @@ const FourthStep = ({
     const filteredDirectory = directory
     ?.filter((item)=>item.subdivision_id?.toString() === data?.subdivision)
     ?.filter((item)=>item.degree_id?.toString() === data?.degree)
-    ?.filter((item)=>item.educationForm === data?.education_form);
+    ?.filter((item)=>item.educationForm === data?.education_form)
+    ?.filter((item)=>{
+        if(!selectedTerm.trim()){
+            return true;
+        }
+        return item.studyPeriod?.toLowerCase().includes(selectedTerm.toLowerCase());
+    });
+
+
+    const directoryAllTermOptions = directory
+     ?.filter((item)=>item.subdivision_id?.toString() === data?.subdivision)
+    ?.filter((item)=>item.degree_id?.toString() === data?.degree)
+    ?.filter((item)=>item.educationForm === data?.education_form)
+    ?.reduce<string[]>((acc, item) => {
+        if (item.subdivision_id?.toString() === data?.subdivision &&
+            item.degree_id?.toString() === data?.degree &&
+            item.educationForm === data?.education_form) {
+            const term = item.studyPeriod;
+            if (term && !acc.includes(term)) {
+                acc.push(term);
+            }
+        }
+        return acc;
+    },[]);
+    console.log('directoryAllTermOptions',directoryAllTermOptions);
 
     useEffect(()=>{
         const filteredDirectory = directory
@@ -734,6 +763,33 @@ const FourthStep = ({
                             {errors['education_form']}
                         </span>
                     }
+                </Label>
+                <Label className="space-y-2">
+                    <span>
+                        Термін навчання
+                    </span>
+                    <Select 
+                        value={selectedTerm}
+                        onValueChange={(value)=>{
+                            if(value === 'all'){
+                                setSelectedTerm('');
+                                return
+                            }
+                            setSelectedTerm(value)
+                        }}
+                    >
+                    <SelectTrigger >
+                        <SelectValue placeholder="Оберіть термін навчання" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectItem value="all">Всі терміни</SelectItem>
+                        {
+                            directoryAllTermOptions?.map((term)=>(
+                                <SelectItem key={term} value={term}>{term}</SelectItem>
+                            ))
+                        }
+                    </SelectContent>
+                    </Select>
                 </Label>
                 <Label className="space-y-2">
                     <span>

@@ -7,9 +7,10 @@ import path from "path";
 import XlsxPopulate from "xlsx-populate";
 import { Degree, Directory, EducationalProgram, Subdivision } from "@/types/db";
 
-const DEGREE_MAX_ROWS = 29;
-const SUBDIVISION_MAX_ROWS = 29;
-const PROGRAM_MAX_ROWS = 99;
+const DEGREE_MAX_ROWS = 101;
+const SUBDIVISION_MAX_ROWS = 100;
+const PROGRAM_MAX_ROWS = 900;
+const DIRECTORY_MAX_ROWS = 1500;
 
 // const A = -1; //not used , starting from B always
 const B = 0;
@@ -141,7 +142,7 @@ const addDirectory = async (sheet: any) => {
     typedDirectory.forEach((directory, index) => {
         sheet.cell(`B${index + 2}`).value(directory.subdivisionName);
         sheet.cell(`D${index + 2}`).value(directory.degreeName);
-        sheet.cell(`F${index + 2}`).value(directory.specialtyName);
+        sheet.cell(`F${index + 2}`).value(directory.educationalProgram);
         //now static values starting from H
         sheet.cell(`H${index + 2}`).value(directory.educationForm);
         sheet
@@ -376,7 +377,7 @@ export const POST = auth(async (req) => {
             );
         }
 
-        const directory:Omit<Directory,'id'>[] = sheetReference.range(`B2:AC${PROGRAM_MAX_ROWS}`).value()
+        const directory:Omit<Directory,'id'>[] = sheetReference.range(`B2:AC${DIRECTORY_MAX_ROWS}`).value()
         .filter((el:string[])=>{
             //check if B , D , F , H , I , L , M is not empty
             return el[B] && el[D] && el[F] && el[H] && el[I] && el[L] && el[M]
@@ -385,7 +386,7 @@ export const POST = auth(async (req) => {
             return {
             subdivision_id:subidivisions.findIndex(s=>s.name===el[B])+1,
             degree_id:degrees.findIndex(d=>d.name===el[D])+1,
-            educationalProgramID:programs.findIndex(p=>p.specialtyName===el[F])+1,
+            educationalProgramID:programs.findIndex(p=>p.educationalProgram===el[F])+1,
             
             educationForm:el[H] as ('денна' | 'заочна'),
             accreditation:el[I]==='Так' ? true : false,
