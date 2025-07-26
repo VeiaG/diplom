@@ -88,14 +88,19 @@ type VstupFormData = {
     education_form: string,
     directory_id: string,
 }
-
 type VstupJurData = VstupFormData & {
     financing: 'jur',
     payment_term: string,
     jur_name: string,
     jur_pib: string,
-    jur_status: string,
+    jur_pos: string,
+    jur_id: string,
+    jur_phone: string,
+    jur_email: string,
+    jur_account: string,
+    jur_bank_code: string,
     jur_pib_short: string,
+    jur_status: string,
     jur_req: string,
 }
 type VstupPhysData = VstupFormData & {
