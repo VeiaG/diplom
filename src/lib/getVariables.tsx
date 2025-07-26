@@ -13,61 +13,65 @@ export type AdmissionData = {
     address_vstup: string;
     ipn_vstup: string;
     phone_vstup: string;
-    
+
     pib_legal: string;
     passport_legal: string;
     address_legal: string;
     ipn_legal: string;
     phone_legal: string;
-  
-    education_form: string; // денна = "денною", заочна = "заочною"
-  
+
+    education_form: string;
+
     education_program: string;
     education_specialty: string;
     degree: string;
-    accreditation: string; // true = "акредитована", else "не акредитована"
-    accreditation_term: string; // toLocaleDateString()
+    accreditation: string;
+    accreditation_term: string;
     credits: string;
-  
+
     financing: string;
-  
-    pib_vstup_short: string; // Ім'я + ПРІЗВИЩЕ_КАПСОМ
+
+    pib_vstup_short: string;
     pib_legal_short: string;
 
-    paidEntire:string,
-    paidEntireW:string,
+    paidEntire: string;
+    paidEntireW: string;
 
-    y1Paid:string,
-    y1PaidW:string,
-    yy1:string,
+    y1Paid: string;
+    y1PaidW: string;
+    yy1: string;
 
-    y2Paid:string,
-    y2PaidW:string,
-    yy2:string,
+    y2Paid: string;
+    y2PaidW: string;
+    yy2: string;
 
-    y3Paid:string,
-    y3PaidW:string,
-    yy3:string,
+    y3Paid: string;
+    y3PaidW: string;
+    yy3: string;
 
-    y4Paid:string,
-    y4PaidW:string,
-    yy4:string,
+    y4Paid: string;
+    y4PaidW: string;
+    yy4: string;
 
-    y1DuePay:string,
+    y1DuePay: string;
 
-    anualPayDue:string,
-    semesterPayDue:string,
+    payDue: string;
+    payment_term: string;
 
     dean: string;
 
     jur_name: string;
+    jur_pos: string;
+    jur_id: string;
+    jur_phone: string;
     jur_pib: string;
-    jur_status: string;
     jur_pib_short: string;
-    jur_req: string;
+    jur_email: string;
+    jur_account: string;
+    jur_bank_code: string;
+    jur_status: string;
     
-
-  };
+};
 
 const getShortName = (name:string) => {
     //Отримати ім'я та прізвище з ПІБ , у вигляді 'Ім'я ПРІЗВИЩЕ_КАПСОМ'
@@ -166,21 +170,25 @@ export const getVariables =async (initialData:{
 
         //y1Due Pay - дата в такому форматі : 1 вересня 2024 р.
         y1DuePay: formatDate(curDirectory.firstYearPayDue) || '[ТЕРМІН ОПЛАТИ ЗА ПЕРШИЙ РІК НЕ ВКАЗАНО]',
-
-        anualPayDue: initialData?.payment_term === "щороку" ? curDirectory.anualPayDue : "",
-        semesterPayDue: initialData?.payment_term === "кожного семестру" ? curDirectory.semesterPayDue : "",
+        //paydue - anualPayDue або semesterPayDue 
+        payDue: initialData?.payment_term === 'щороку' ? curDirectory.anualPayDue :
+                (initialData?.payment_term === 'кожного семестру') ? curDirectory.semesterPayDue : '',
+        payment_term: initialData?.payment_term || '',
 
 
         dean: currentSubdivision.dean || '[ДЕКАНА НЕ ЗНАЙДЕНО]',
 
 
-        jur_name: initialData?.jur_name || '[НАЗВА ЮРИДИЧНОЇ ОСОБИ НЕ ВКАЗАНА]',
-        jur_pib: initialData?.jur_pib || '[ПІБ ПРЕДСТАВНИКА ЮРИДИЧНОЇ ОСОБИ НЕ ВКАЗАНО]',
-        jur_status: initialData?.jur_status || '[ПОСАДА ПРЕДСТАВНИКА ЮРИДИЧНОЇ ОСОБИ НЕ ВКАЗАНА]',
-        jur_pib_short: initialData?.jur_pib_short || '[ІП ПРЕДСТАВНИКА ЮРИДИЧНОЇ ОСОБИ НЕ ВКАЗАНО]',
-        jur_req: initialData?.jur_req
-        || '[ЮРИДИЧНІ ДАНІ НЕ ВКАЗАНІ]',
-
+        jur_name: initialData?.jur_name || '[jur_not_found]',
+        jur_pib: initialData?.jur_pib || '[jur_not_found]',
+        jur_pib_short: getShortName(initialData?.jur_pib || '[jur_not_found]'),
+        jur_pos: initialData?.jur_pos || '[jur_not_found]',
+        jur_id: initialData?.jur_id || '[jur_not_found]',
+        jur_phone: initialData?.jur_phone || '[jur_not_found]',
+        jur_email: initialData?.jur_email || '[jur_not_found]',
+        jur_account: initialData?.jur_account || '[jur_not_found]',
+        jur_bank_code: initialData?.jur_bank_code || '[jur_not_found]',
+        jur_status: initialData?.jur_status || '[jur_not_found]',
 
     }
     return data;

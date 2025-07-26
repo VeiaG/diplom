@@ -35,7 +35,6 @@ import { Input } from "@/components/ui/input";
 import { AddPageProvider, useAddPage } from "@/hooks/addPageContext";
 import { useDirectory } from "@/hooks/useDirectory";
 
-import { Textarea } from "@/components/ui/textarea";
 import { useRouter, useSearchParams } from "next/navigation";
 import SubdivisionComboBox from "@/components/subdivision-combo-box";
 import EducationalProgramComboBox from "@/components/educational-combo-box";
@@ -48,7 +47,7 @@ import { DegreeComboBox } from "@/components/degree-combo-box";
 
             
 
-const FirstAndHalfStep = ({
+const JurStep = ({
     setStep
 }:{
     setStep: React.Dispatch<React.SetStateAction<number>>;
@@ -64,7 +63,16 @@ const FirstAndHalfStep = ({
   
     const handleNextPage = ()=>{
         const currentErrors = {...errors};
-        const keys = ['jur_name','jur_pib','jur_status','jur_pib_short','jur_req'];
+        const keys = ['jur_name',
+            'jur_pos',
+            'jur_id',
+            'jur_phone',
+            'jur_pib',
+            'jur_email',
+            'jur_account',
+            'jur_bank_code',
+            'jur_status'
+        ];
         keys.forEach((key)=>{
             if(isNull(key)){
                 currentErrors[key] = 'Це поле не може бути пустим';
@@ -76,18 +84,18 @@ const FirstAndHalfStep = ({
         if(Object.keys(currentErrors).length > 0){
             return;
         }
-        setStep(2);
+        setStep(4);
     }
     return (
         <Card>
             <CardContent className="pt-6 space-y-4">
                 <h1 className="text-2xl font-bold ">
-                    Крок 1.5 Дані юридичної особи
+                    Крок 3 Дані юридичної особи
                 </h1>
                 <div className="flex flex-col gap-2">
                         <Label className="space-y-2">
                             <span>
-                                Організаційно-правова форма та назва юридичної особи, яка замовляє освітню послугу
+                                Повне найменування
                             </span>
                             <Input placeholder="Введіть назву юридичної особи" 
                                 value={data?.jur_name || ''}
@@ -102,9 +110,55 @@ const FirstAndHalfStep = ({
                         </Label>
                         <Label className="space-y-2">
                             <span>
-                                Посада і представник замовника
+                                Місцезнаходження юридичної особи
                             </span>
-                            <Input placeholder="Введіть посаду і представника замовника" 
+                            <Input placeholder="Введіть місцезнаходження юридичної особи" 
+                                value={data?.jur_pos || ''}
+                                onChange={(e)=>setKey('jur_pos',e.target.value)}
+                            />
+                            {
+                                errors['jur_pos'] && 
+                                <span className="text-red-500 text-sm">
+                                    {errors['jur_pos']}
+                                </span>
+                            }
+                        </Label>
+                        <Label className="space-y-2">
+                            <span>
+                                Ідентифікаційний код згідно з ЄДРПОУ
+                            </span>
+                            <Input placeholder="Введіть ідентифікаційний код" 
+                                value={data?.jur_id || ''}
+                                onChange={(e)=>setKey('jur_id',e.target.value)}
+                            />
+                            {
+                                errors['jur_id'] && 
+                                <span className="text-red-500 text-sm">
+                                    {errors['jur_id']}
+                                </span>
+                            }
+                        </Label>
+                       
+                        <Label className="space-y-2">
+                            <span>
+                               Номери телефонів
+                            </span>
+                            <Input placeholder="Введіть номери телефонів" 
+                                value={data?.jur_phone || ''}
+                                onChange={(e)=>setKey('jur_phone',e.target.value)}
+                            />
+                            {
+                                errors['jur_phone'] && 
+                                <span className="text-red-500 text-sm">
+                                    {errors['jur_phone']}
+                                </span>
+                            }
+                        </Label>
+                         <Label className="space-y-2">
+                            <span>
+                                Прізвище, власне ім’я та по батькові керівника
+                            </span>
+                            <Input placeholder="Введіть ПІБ керівника" 
                                 value={data?.jur_pib || ''}
                                 onChange={(e)=>setKey('jur_pib',e.target.value)}
                             />
@@ -112,6 +166,51 @@ const FirstAndHalfStep = ({
                                 errors['jur_pib'] && 
                                 <span className="text-red-500 text-sm">
                                     {errors['jur_pib']}
+                                </span>
+                            }
+                        </Label>
+                        <Label className="space-y-2">
+                            <span>
+                                Адреса електронної пошти
+                            </span>
+                            <Input placeholder="Введіть адресу електронної пошти" 
+                                value={data?.jur_email || ''}
+                                onChange={(e)=>setKey('jur_email',e.target.value)}
+                            />
+                            {
+                                errors['jur_email'] && 
+                                <span className="text-red-500 text-sm">
+                                    {errors['jur_email']}
+                                </span>
+                            }
+                        </Label>
+                        <Label className="space-y-2">
+                            <span>
+                                Поточний рахунок
+                            </span>
+                            <Input placeholder="Введіть поточний рахунок" 
+                                value={data?.jur_account || ''}
+                                onChange={(e)=>setKey('jur_account',e.target.value)}
+                            />
+                            {
+                                errors['jur_account'] && 
+                                <span className="text-red-500 text-sm">
+                                    {errors['jur_account']}
+                                </span>
+                            }
+                        </Label>
+                        <Label className="space-y-2">
+                            <span>
+                                Код банку
+                            </span>
+                            <Input placeholder="Введіть код банку" 
+                                value={data?.jur_bank_code || ''}
+                                onChange={(e)=>setKey('jur_bank_code',e.target.value)}
+                            />
+                            {
+                                errors['jur_bank_code'] && 
+                                <span className="text-red-500 text-sm">
+                                    {errors['jur_bank_code']}
                                 </span>
                             }
                         </Label>
@@ -130,43 +229,12 @@ const FirstAndHalfStep = ({
                                 </span>
                             }
                         </Label>
-                        <Label className="space-y-2">
-                            <span>
-                                ІП представника 
-                            </span>
-                            <Input placeholder="Олена ГОЛОВАЧ" 
-                                value={data?.jur_pib_short || ''}
-                                onChange={(e)=>setKey('jur_pib_short',e.target.value)}
-                            />
-                            {
-                                errors['jur_pib_short'] && 
-                                <span className="text-red-500 text-sm">
-                                    {errors['jur_pib_short']}
-                                </span>
-                            }
-                        </Label>
-                        <Label className="space-y-2">
-                            <span>
-                                Реквізити замовника
-                            </span>
-                            <Textarea placeholder="Введіть реквізити замовника" 
-                                value={data?.jur_req || ''}
-                                onChange={(e)=>setKey('jur_req',e.target.value)}
-                                className="max-h-32"
-                            />
-                            {
-                                errors['jur_req'] && 
-                                <span className="text-red-500 text-sm">
-                                    {errors['jur_req']}
-                                </span>
-                            }
-                        </Label>
                 </div>
             </CardContent>
             <CardFooter>
                 <div className="flex items-center gap-2 ml-auto">
                     <Button variant={"outline"} 
-                        onClick={() => setStep(1)}
+                        onClick={() => setStep(2)}
                     >Назад</Button>
                     <Button variant={"default"}
                         onClick={handleNextPage}
@@ -220,10 +288,6 @@ const FirstStep = ({
 
         setErrors(currentErrors);
         if(Object.keys(currentErrors).length > 0){
-            return;
-        }
-        if(data?.financing === 'jur'){
-            setStep(1.5);
             return;
         }
         setStep(2);
@@ -303,7 +367,7 @@ const FirstStep = ({
                         <SelectItem value="кожного семестру">кожного семестру</SelectItem>
                          <SelectItem value="одноразово">одноразово</SelectItem>
                         <SelectItem value="щомісяця">щомісяця</SelectItem>
-                        <SelectItem value="за кредити ЄКТС">за кредити ЄКТС</SelectItem>
+                        <SelectItem value="за кредити ЄКТС">за кредити ЄКТС</SelectItem>
                         
                     </SelectContent>
                     </Select>
@@ -449,12 +513,7 @@ const SecondStep = ({
                 <div className="flex items-center gap-2 ml-auto">
                     <Button variant={"outline"} 
                         onClick={() => {
-                            if(data?.financing !== 'jur'){
-                                setStep(1);
-                            }
-                            else{
-                                setStep(1.5);
-                            }
+                             setStep(1);
                         }}
                     >Назад</Button>
                     <Button variant={"default"}
@@ -466,7 +525,7 @@ const SecondStep = ({
         </Card>
     );
 }
-const ThirdStep = ({
+const PredstavnykStep = ({
     setStep
 }:{
     setStep: React.Dispatch<React.SetStateAction<number>>;
@@ -1054,6 +1113,7 @@ const LastStep = ({
 
 const PageContent = ()=>{
     const {
+        data,
         setAll
     } = useAddPage();
     const [step, setStep] = useState(1);
@@ -1116,15 +1176,14 @@ const PageContent = ()=>{
             {step === 1 && <FirstStep
                 setStep={setStep}
             />}
-            {step === 1.5 && <FirstAndHalfStep
-                setStep={setStep}
-            />}
             {step === 2 && <SecondStep
                 setStep={setStep}
             />}
-            {step === 3 && <ThirdStep
+            {step === 3 &&( data.financing === 'jur' ? <JurStep
                 setStep={setStep}
-            />}
+            /> : <PredstavnykStep
+                setStep={setStep}
+            />)}
             {
                 step === 4 && <FourthStep
                     setStep={setStep}

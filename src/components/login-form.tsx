@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { useEffect, useState } from "react"
+import { FormEvent, useEffect, useState } from "react"
 import { toast } from "sonner"
 import { signIn, useSession } from "next-auth/react"
 // import Link from "next/link"
@@ -32,7 +32,8 @@ export function LoginForm({
   }, [status,router])
 
   // query params
-  const handleLogin = async ()=>{
+  const handleLogin = async (e: FormEvent<HTMLFormElement>)=>{
+    e.preventDefault();
     if(!email || !password){
       toast.warning("Логін або пароль не можуть бути пустими")
       return;
@@ -65,10 +66,7 @@ export function LoginForm({
           </CardDescription>
         </CardHeader>
         <CardContent>
-            <div className="grid gap-6">
-              <div className="flex flex-col gap-4">
-              </div>
-              <div className="grid gap-6">
+           <form className="grid gap-6" onClick={handleLogin}>
                 <div className="grid gap-2">
                   <Label htmlFor="email">Email</Label>
                   <Input
@@ -97,17 +95,12 @@ export function LoginForm({
                     placeholder="Password"
                   />
                 </div>
-                <Button onClick={handleLogin} className="w-full">
+                <Button 
+                  type='submit'
+                className="w-full">
                   Увійти
                 </Button>
-              </div>
-              {/* <div className="text-center text-sm">
-                Немає аккаунту?{" "}
-                <Link href="/" className="underline underline-offset-4">
-                  Зверніться до адміністратора
-                </Link>
-              </div> */}
-            </div>
+              </form>
         </CardContent>
       </Card>
     </div>
