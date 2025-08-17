@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { generateFile, getVariables } from '@/lib/getVariables';
 import { auth } from "@/auth";
-import { EDU_FILE_NAME } from "@/globals";
+import { EDU_FILE_NAME,EDU_ASPIRANTS_FILE_NAME } from "@/globals";
 
 export const POST = auth( async (req) => {
     try{
@@ -14,11 +14,18 @@ export const POST = auth( async (req) => {
             return NextResponse.json({ error: 'Required fields are missing' }, { status: 400 });
         }
 
+        
+
         // Мапинг змінних у файлах в об'єкт
         const data = await getVariables(initialData);
 
         // Файл для генерації
-        const fileName = EDU_FILE_NAME;
+        let fileName = EDU_FILE_NAME;
+
+        //Якщо доктор філософії , то інший шаблон
+        if(data.degree === 'доктор філософії') {
+            fileName = EDU_ASPIRANTS_FILE_NAME;
+        }
 
         // Отримуємо буфер файлу
         const buffer = await generateFile(data, fileName);

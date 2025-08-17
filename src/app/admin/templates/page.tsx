@@ -39,6 +39,12 @@ const TemplatesPage = () => {
           description="Завантажте новий шаблон контракту для фізичної особи або отримайте існуючий"
           apiEndpoint="/api/templates/phys"
         />
+
+        <TemplateCard 
+          title="Шаблон навчального контракту (доктори філософії)"
+          description="Завантажте новий шаблон навчального контракту (доктори філософії) або отримайте існуючий"
+          apiEndpoint="/api/templates/edu_aspirants"
+        />
       </div>
     </div>
   );

@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { generateFile, getVariables } from '@/lib/getVariables';
 import archiver from 'archiver';
 import { auth } from "@/auth";
-import { EDU_FILE_NAME, JUR_FILE_NAME, PHYS_FILE_NAME } from "@/globals";
+import { EDU_FILE_NAME, JUR_FILE_NAME, PHYS_FILE_NAME,EDU_ASPIRANTS_FILE_NAME } from "@/globals";
 
 export const POST = auth( async (req) => {
     try{
@@ -13,7 +13,13 @@ export const POST = auth( async (req) => {
             return NextResponse.json({ error: "Обов'язкові поля відсутні" }, { status: 400 });
         }
         const data = await getVariables(initialData); // Мапинг змінних у файлах в об'єкт
-        const fileNames = [EDU_FILE_NAME]; // Список файлів для генерації
+        const fileNames:string[] = []; // Список файлів для генерації
+        // Якщо доктор філософії , то інший шаблон
+        if(data.degree === 'доктор філософії') {
+            fileNames.push(EDU_ASPIRANTS_FILE_NAME);
+        } else {
+            fileNames.push(EDU_FILE_NAME);
+        }
         const endFileNames = [`_Договір_навчання_${new Date().getFullYear()}.docx`];
         const endPrefix = initialData?.pib_vstup.replace(' ', '_');
         if(initialData?.financing === 'phys'){
@@ -24,6 +30,8 @@ export const POST = auth( async (req) => {
             fileNames.push(JUR_FILE_NAME);
             endFileNames.push(`_Договір_юр_особа_${new Date().getFullYear()}.docx`);
         }
+        console.log('FILENAMES', fileNames);
+        console.log('DEGREE',data.degree)
         const stream = new ReadableStream({ // Використовуємо ReadableStream для потокової передачі архіву
             async start(controller) {
                 const archive = archiver('zip', { zlib: { level: 9 } });
