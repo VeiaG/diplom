@@ -379,8 +379,11 @@ export const POST = auth(async (req) => {
 
         const directory:Omit<Directory,'id'>[] = sheetReference.range(`B2:AC${DIRECTORY_MAX_ROWS}`).value()
         .filter((el:string[])=>{
-            //check if B , D , F , H , I , L , M is not empty
-            return el[B] && el[D] && el[F] && el[H] && el[I] && el[L] && el[M]
+            //check if B , D , F , H , I , L is not empty
+            if( el[B] && el[D] && el[F] && el[H] && el[I] && el[L] ){
+                return true
+            }
+            return false    
         })
         .map((el:string[]):Omit<Directory,'id'>=>{
             return {
@@ -418,8 +421,7 @@ export const POST = auth(async (req) => {
 
 
         }} )
-        // console.log('DIRECTORY',directory);
-
+        console.log('DIRECTORY',directory.length);
         //Вставляємо дані в БД
         await clearDB();
         for (const degree of degrees) {
